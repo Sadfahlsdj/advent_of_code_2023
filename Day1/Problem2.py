@@ -10,6 +10,9 @@ def main():
     for l in lines:
         first = 0
         last = 0
+        # what is about to follow is a DISGUSTING number of if statements
+        # could be improved by checking against values in an array
+        # instead of against 'one', 'two' etc individually
         for i in range(len(l) + 1):
             if l.find('one') == i or l.find('1') == i:
                 first = 1

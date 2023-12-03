@@ -16,10 +16,12 @@ for l in lines:
             redArray.append(red)
             greenArray.append(green)
             blueArray.append(blue)
-
+            # instead of doing fail checks, adds each individual # of cubes used to a 2d array
             red, green, blue = 0, 0, 0
 
         if l[i].isnumeric():
+            # constructs numbers from digits
+            # hardcoded because they only go up to 2 digits
             if l[i+1].isnumeric():
                 if l[i + 3] == 'r':
                     red += int(l[i]) * 10
@@ -37,6 +39,7 @@ for l in lines:
     redMax = max(redArray)
     greenMax = max(greenArray)
     blueMax = max(blueArray)
+    # smallest number of cubes needed is just the max for each individual color array
 
     power = redMax * greenMax * blueMax
     print(f"max red, green, and blue for index {index} are {redMax}, {blueMax}, {greenMax}, and total power is {power}")
