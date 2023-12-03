@@ -1,0 +1,122 @@
+# garbage sections of code that I feel too emotionally attached to to delete
+
+def getWholeNumber(row, index):
+    # hacky way since numbers are capped to 3 digits long
+    total = 0
+    if index == 0:
+        if row[index + 1].isnumeric():
+            if row[index + 2].isnumeric():
+                total = 100 * row[index] + 10 * row[index + 1] + row[index + 2]
+                index += 2
+            else:
+                total = 10 * row[index] + row[index + 1]
+                index += 1
+        else:
+            total = row[index]
+    elif index == len(row) - 1:
+        if row[index - 1].isnumeric():
+            if row[index - 2].isnumeric():
+                total = 100 * row[index - 2] + 10 * row[index - 1] + row[index]
+                index += 2
+            else:
+                total = 10 * row[index - 1] + row[index]
+                index += 1
+        else:
+            total = row[index]
+    else:
+        if row[index - 1].isnumeric() and row[index + 1].isnumeric():
+            total = 100 * row[index - 1] + 10 * row[index] + row[index + 1]
+            index += 1
+
+    print(total)
+    return total
+
+
+
+    # failed attempt at proper iterative way to do it
+    """
+    lowestIndex, highestIndex, currentIndex = index, index, index
+    total = 0
+
+    while currentIndex > 0 and row[currentIndex - 1].isnumeric():
+        currentIndex -= 1
+    lowestIndex = currentIndex
+    currentIndex = index
+
+    while currentIndex < len(row) and row[currentIndex + 1].isnumeric():
+        currentIndex += 1
+    highestIndex = currentIndex
+
+    for j in reversed(range(highestIndex - lowestIndex)):
+        total += (highestIndex - j) ** j
+
+    i += highestIndex - lowestIndex
+    print(total)
+    return total
+    """
+
+"""for i in range(a[0], a[1]):
+        if a[2] == 0:
+            if a[0] == 0:
+                for j in range(a[2], a[2] + 1):
+                    for k in range(a[0], a[1] + 1):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+            elif a[1] == len(lines[a[2]]) - 1:
+                for j in range(a[2], a[2] + 1):
+                    for k in range(a[0] - 1, a[1]):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+        elif a[2] == len(lines) - 1:
+            if a[0] == 0:
+                for j in range(a[2] - 1, a[2]):
+                    for k in range(a[0], a[1] + 1):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+            elif a[1] == len(lines[a[2]]) - 1:
+                for j in range(a[2] - 1, a[2]):
+                    for k in range(a[0] - 1, a[1]):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+        else:
+            if a[0] == 0:
+                for j in range(a[2] - 1, a[2] + 1):
+                    for k in range(a[0], a[1] + 1):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+            elif a[1] == len(lines[a[2]]) - 1:
+                for j in range(a[2] - 1, a[2] + 1):
+                    for k in range(a[0] - 1, a[1]):
+                        if not lines[j][k].isnumeric() and not lines[j][k] == '.':
+                            print(f"added {a[3]} from line {a[2]}")
+                            if not numberAdded:
+                                total += a[3]
+                                # print(f"added {a[3]} from line {a[2]}")
+                                numberAdded = True
+                                return
+                                """
