@@ -1,0 +1,48 @@
+# functional but OBSCENELY high runtime solution for problem 1
+
+for i in range(len(maps)):
+    print("reached next map")
+    for l in maps[i]:
+        print("reached next map2")
+        dest, src, rng = l.split(' ') # splits by spaces into the 3 target values
+        dest, src, rng = int(dest), int(src), int(rng)
+
+        # CODE BLOCK BELOW IS EXCEEDINGLY SLOW
+        for j in range(rng):
+            # print(f"dest = {dest}, sources = {src}, range = {rng}, appending")
+            destinations[i].append(dest + j)
+            sources[i].append(src + j)
+
+print("checkpoint 5")
+
+# print(sources[0])
+# print(destinations[0])
+
+
+for i in range(len(destinations)):
+    del destinations[i][0]
+    del sources[i][0]
+    # due to using append instead of reassigning values
+    # and due to how I initialized destinations & sources
+    # there's an extra 0 at the beginning of each element, this removes it
+
+currentValues = seeds
+for i in range(len(currentValues)):
+    currentValues[i] = int(currentValues[i])
+
+"""for j in range(len(currentValues)):
+    if currentValues[j] in sources[0]:
+        currentValues[j] = destinations[j][0]"""
+
+for i in range(len(destinations)):
+    for j in range(len(currentValues)):
+        if currentValues[j] in sources[i]:
+            # print(f"found source {currentValues[j]}, matched with destination {destinations[i][j]}")
+            currentValues[j] = destinations[i][sources[i].index(currentValues[j])]
+        else:
+            currentValues[j] = currentValues[j] # honestly not needed, just for clarity
+    print(currentValues)
+
+print("checkpoint 6")
+
+# print(currentValues)
