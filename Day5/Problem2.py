@@ -1,7 +1,7 @@
 import re
 import sys
 
-with open('example.txt') as f:
+with open('input.txt') as f:
     lines = [line.rstrip() for line in f]
 
 maps = [[0 for i in range(1)] for j in range(7)]
@@ -84,7 +84,10 @@ for i in range(len(values)): # iterate over each map
                     changed[k], changed[k+1] = True, True
                     tmp, tmp2 = cv[k], cv[k+1]
 
-                    cv[k] = dest + cv[k] - src # sets first value in the range
+                    if src > tmp:
+                        cv[k] = dest + cv[k] - src + (src - tmp) # sets first value in the range
+                    else:
+                        cv[k] = dest + cv[k] - src
                     cv[k + 1] = min(cv[k+1], rng, (tmp + tmp2 - src)) # sets the range
                     print(f"changed values {tmp}, {tmp2} to {cv[k]}, {cv[k+1]}")
 
