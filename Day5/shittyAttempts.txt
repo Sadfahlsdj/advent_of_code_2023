@@ -46,3 +46,17 @@ for i in range(len(destinations)):
 print("checkpoint 6")
 
 # print(currentValues)
+
+# ATTEMPT TO TURN SEED INPUT INTO AN ARRAY for part 2 - SEVERE RUNTIME ISSUES
+seedInput = lines[1].split()
+for i in range(len(seedInput)):
+    seedInput[i] = int(seedInput[i])
+seeds = []
+
+j = 0
+while j < len(seedInput) - 1:
+    print('a')
+    # seedInput[i], seedInput[i+1] = int(seedInput[i]), int(seedInput[i+1])
+    for j in range(seedInput[j+1]):
+        seeds.append(seedInput[i] + j)
+    i += 2

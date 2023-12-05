@@ -1,6 +1,6 @@
 import re
 
-with open('example.txt') as f:
+with open('input.txt') as f:
     lines = [line.rstrip() for line in f]
 
 maps = [[0 for i in range(1)] for j in range(7)]
@@ -11,7 +11,20 @@ for i in range(1, len(lines)):
     for match in re.finditer(':', lines[i]):
         partitions.append(i) # finds all instances of :
 
-seeds = lines[1].split() # seeds are different, they don't go in the 2d array
+# seeds = lines[1].split() # seeds are different, they don't go in the 2d array
+seedInput = lines[1].split()
+for i in range(len(seedInput)):
+    seedInput[i] = int(seedInput[i])
+seeds = []
+
+j = 0
+while j < len(seedInput) - 1:
+    print('a')
+    # seedInput[i], seedInput[i+1] = int(seedInput[i]), int(seedInput[i+1])
+    for j in range(seedInput[j+1]):
+        seeds.append(seedInput[i] + j)
+    i += 2
+
 
 for i in range(len(partitions) - 1):
     maps[i] = lines[partitions[i] + 1:partitions[i + 1] - 1]
@@ -50,7 +63,7 @@ for i in range(len(values)): # iterate over each map
             if currentValues[k] < src + rng and currentValues[k] >= src:
                 if not changed[k]: # avoids double changing within a category
                     changed[k] = True
-                    print(f"found source {currentValues[k]}, with source and range {src}, {rng} on map number {i+1}, and changed it to {dest + currentValues[k] - src}")
+                    # print(f"found source {currentValues[k]}, with source and range {src}, {rng} on map number {i+1}, and changed it to {dest + currentValues[k] - src}")
                     currentValues[k] = dest + currentValues[k] - src
             else:
                 currentValues[k] = currentValues[k] # honestly not needed, just for clarity
