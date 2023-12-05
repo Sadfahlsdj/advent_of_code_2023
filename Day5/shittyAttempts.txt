@@ -60,3 +60,67 @@ while j < len(seedInput) - 1:
     for j in range(seedInput[j+1]):
         seeds.append(seedInput[i] + j)
     i += 2
+
+# PROBLEM 2 LOGIC FROM WHEN I INTERPRETED THE PROBLEM INCORRECTLY
+for i in range(len(values)): # iterate over each map
+    changed = [False for z in range(len(cv))]
+    # if k, k+1 are the indices of a pair, just set both to True if that range was changed
+    for j in range(len(values[i])): # iterate over each line within the map
+        dest, src, rng = values[i][j][0], values[i][j][1], values[i][j][2] # for my own benefit
+        for k in range(0, int(len(cv)) - 1, 2):
+            # currentValues[k] will be each starting value of a range
+            if cv[k] + cv[k + 1] >= src and src + rng >= cv[k]:
+                if not changed[k]: # avoids double changing within a category
+                    print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
+                    changed[k], changed[k+1] = True, True
+                    cv[k] = dest + cv[k] - src # sets first value in the range
+                    tmp2 = min(cv[k+1], rng)
+                    # cv[k] = cv[k] + src - dest
+                    # cv[k] = max(src, cv[k]) - abs(src - dest)
+                    cv[k + 1] = tmp2 # sets the actual range
+            else:
+                print(f"not changed on dest, src, rng {dest}, {src}, {rng}"
+SAVING CURRENT PROGRESS IN CASE OF CATASTROPHE
+for i in range(len(values)): # iterate over each map
+    changed = [False for z in range(len(cv))]
+    # if k, k+1 are the indices of a pair, just set both to True if that range was changed
+    for j in range(len(values[i])): # iterate over each line within the map
+        dest, src, rng = values[i][j][0], values[i][j][1], values[i][j][2] # for my own benefit
+        for k in range(0, int(len(cv)) - 1, 2):
+            # currentValues[k] will be each starting value of a range
+            if cv[k] + cv[k + 1] >= src and src + rng >= cv[k]:
+                if not changed[k]: # avoids double changing within a category
+                    print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
+                    changed[k], changed[k+1] = True, True
+                    tmp, tmp2 = cv[k], cv[k+1]
+
+                    cv[k] = dest + cv[k] - src # sets first value in the range
+                    cv[k + 1] = min(cv[k+1], rng) # sets the range
+
+                    maxSource = src + rng - 1
+                    maxInput = tmp + tmp2 - 1
+                    if tmp >= src and maxInput <= maxSource:
+                        continue
+                    else:
+                        if tmp < src and maxInput > maxSource:
+                            cv.append(tmp)
+                            cv.append(src - tmp)
+                            cv.append(maxSource + 1)
+                            cv.append(maxInput - maxSource)
+                            for z in range(4):
+                                changed.append(False)
+                        elif tmp < src:
+                            cv.append(tmp)
+                            cv.append(src - tmp)
+                            for z in range(2):
+                                changed.append(False)
+                        elif maxInput > maxSource:
+                            cv.append(maxSource + 1)
+                            cv.append(maxInput - maxSource)
+                            for z in range(2):
+                                changed.append(False)
+                        else:
+                            continue
+            else:
+                print(f"not changed on dest, src, rng {dest}, {src}, {rng}")
+# 82, 84, 84, 84, 77, 45, 46, 46

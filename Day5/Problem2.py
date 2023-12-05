@@ -57,12 +57,18 @@ print(cv)
 52 50 48
 -----------------
 
-77, 14, 53, 13
+81, 14, 57, 13
 0 15 37
 37 52 2
 39 0 15
 
-77, 14, 38, 2
+81, 14, 57, 13
+49 53 8
+0 11 42
+42 0 7
+57 7 4
+
+81, 14, 53, 8, 61, 9
 """
 for i in range(len(values)): # iterate over each map
     changed = [False for z in range(len(cv))]
@@ -70,16 +76,46 @@ for i in range(len(values)): # iterate over each map
     for j in range(len(values[i])): # iterate over each line within the map
         dest, src, rng = values[i][j][0], values[i][j][1], values[i][j][2] # for my own benefit
         for k in range(0, int(len(cv)) - 1, 2):
+            print(f"considering values {cv[k]} and {cv[k+1]}")
             # currentValues[k] will be each starting value of a range
             if cv[k] + cv[k + 1] >= src and src + rng >= cv[k]:
                 if not changed[k]: # avoids double changing within a category
                     print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
                     changed[k], changed[k+1] = True, True
+                    tmp, tmp2 = cv[k], cv[k+1]
+
                     cv[k] = dest + cv[k] - src # sets first value in the range
-                    tmp2 = min(cv[k+1], rng)
-                    # cv[k] = cv[k] + src - dest
-                    # cv[k] = max(src, cv[k]) - abs(src - dest)
-                    cv[k + 1] = tmp2 # sets the actual range
+                    cv[k + 1] = min(cv[k+1], rng, (tmp + tmp2 - src)) # sets the range
+                    print(f"changed values {tmp}, {tmp2} to {cv[k]}, {cv[k+1]}")
+
+                    maxSource = src + rng - 1
+                    maxInput = tmp + tmp2 - 1
+                    if (tmp >= src and maxInput <= maxSource) or abs(tmp2 - cv[k + 1]) == 0:
+                        continue
+                    else:
+                        if tmp < src and maxInput > maxSource:
+                            cv.append(tmp)
+                            cv.append(src - tmp)
+                            cv.append(maxSource + 1)
+                            cv.append(maxInput - maxSource)
+                            for z in range(4):
+                                changed.append(False)
+                            print(f"appended values {tmp} and {src - tmp}")
+                            print(f"appended values {maxSource + 1} and {maxInput - maxSource}")
+                        elif tmp < src:
+                            cv.append(tmp)
+                            cv.append(abs(tmp2 - cv[k + 1]))
+                            for z in range(2):
+                                changed.append(False)
+                            print(f"appended values {tmp} and {abs(tmp2 - cv[k + 1])}")
+                        elif maxInput > maxSource:
+                            cv.append(maxSource + 1)
+                            cv.append(abs(tmp2 - cv[k + 1]))
+                            for z in range(2):
+                                changed.append(False)
+                            print(f"appended values {maxSource + 1} and {abs(tmp2 - cv[k + 1])}")
+                        else:
+                            continue
             else:
                 print(f"not changed on dest, src, rng {dest}, {src}, {rng}")
 # 82, 84, 84, 84, 77, 45, 46, 46
