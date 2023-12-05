@@ -73,17 +73,15 @@ for i in range(len(values)): # iterate over each map
             # currentValues[k] will be each starting value of a range
             if cv[k] + cv[k + 1] >= src and src + rng >= cv[k]:
                 if not changed[k]: # avoids double changing within a category
-                    # print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
+                    print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
                     changed[k], changed[k+1] = True, True
-                    # print(f"found source {currentValues[k]}, with source and range {src}, {rng} on map number {i+1}, and changed it to {dest + currentValues[k] - src}")
-                    cv[k] = dest + cv[k] - src
+                    cv[k] = dest + cv[k] - src # sets first value in the range
                     tmp2 = min(cv[k+1], rng)
                     # cv[k] = cv[k] + src - dest
                     # cv[k] = max(src, cv[k]) - abs(src - dest)
-                    cv[k + 1] = tmp2
+                    cv[k + 1] = tmp2 # sets the actual range
             else:
-                pass
-                # print(f"not changed on dest, src, rng {dest}, {src}, {rng}") # honestly not needed, just for clarity
+                print(f"not changed on dest, src, rng {dest}, {src}, {rng}")
 # 82, 84, 84, 84, 77, 45, 46, 46
 
     print(cv)
