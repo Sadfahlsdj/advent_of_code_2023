@@ -68,7 +68,7 @@ print(cv)
 42 0 7
 57 7 4
 
-81, 14, 53, 8, 61, 9
+81, 14, 53, 8, 61, 5
 """
 for i in range(len(values)): # iterate over each map
     changed = [False for z in range(len(cv))]
@@ -81,41 +81,53 @@ for i in range(len(values)): # iterate over each map
             if cv[k] + cv[k + 1] >= src and src + rng >= cv[k]:
                 if not changed[k]: # avoids double changing within a category
                     print(f"changed on dest, src, rng {dest}, {src}, {rng} with initial & range {cv[k]}, {cv[k+1]}")
-                    changed[k], changed[k+1] = True, True
-                    tmp, tmp2 = cv[k], cv[k+1]
+                    changed[k], changed[k+1] = True, True # the double counting part
+                    tmp, tmp2 = cv[k], cv[k+1] # storing current beginning & range to use later
 
                     if src > tmp:
+                        # if source value bigger than starting value, adds (source - starting) to the new starting
                         cv[k] = dest + cv[k] - src + (src - tmp) # sets first value in the range
                     else:
                         cv[k] = dest + cv[k] - src
                     cv[k + 1] = min(cv[k+1], rng, (tmp + tmp2 - src)) # sets the range
+                    # three inputs to min for 3 cases
                     print(f"changed values {tmp}, {tmp2} to {cv[k]}, {cv[k+1]}")
 
                     maxSource = src + rng - 1
-                    maxInput = tmp + tmp2 - 1
+                    maxInput = tmp + tmp2 - 1 # makes next part easier
+                    # next part is for if extra ranges need to be added
+                    # e.g. if the input range is NOT contained within the source range
                     if (tmp >= src and maxInput <= maxSource) or abs(tmp2 - cv[k + 1]) == 0:
+                        # true if input range is entirely contained within source range
                         continue
                     else:
                         if tmp < src and maxInput > maxSource:
+                            # if input range has values smaller and bigger than the endpoints of the source range
+                            # need to add two extra ranges in this case
                             cv.append(tmp)
                             cv.append(src - tmp)
                             cv.append(maxSource + 1)
                             cv.append(maxInput - maxSource)
                             for z in range(4):
                                 changed.append(False)
+                                # append it four times, one for each of the new values
                             print(f"appended values {tmp} and {src - tmp}")
                             print(f"appended values {maxSource + 1} and {maxInput - maxSource}")
                         elif tmp < src:
+                            # if input range has values smaller than the endpoints of the source range
                             cv.append(tmp)
                             cv.append(abs(tmp2 - cv[k + 1]))
                             for z in range(2):
                                 changed.append(False)
+                                # append twice, one for each new value
                             print(f"appended values {tmp} and {abs(tmp2 - cv[k + 1])}")
                         elif maxInput > maxSource:
-                            cv.append(maxSource + 1)
+                            # if input range has values bigger than the endpoints of the source range
+                            cv.append(maxSource + 1) # first value bigger than the source range
                             cv.append(abs(tmp2 - cv[k + 1]))
                             for z in range(2):
                                 changed.append(False)
+                                # append twice, one for each new value
                             print(f"appended values {maxSource + 1} and {abs(tmp2 - cv[k + 1])}")
                         else:
                             continue
@@ -125,6 +137,7 @@ for i in range(len(values)): # iterate over each map
 
     print(cv)
 
+# smallest value should only consider every other value in the values array, starting with index 0
 minStart = cv[0]
 for k in range(0, int(len(cv)) - 1, 2):
     if cv[k] < minStart:
