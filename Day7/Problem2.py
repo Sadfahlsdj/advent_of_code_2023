@@ -1,16 +1,17 @@
 from collections import Counter
 
-with open('input.txt') as f:
+with open('example.txt') as f:
     lines = [line.rstrip() for line in f]
 
 """
-CURRENT STEPS AFTER P1 COPYPASTA
+CURRENT STEPS AFTER P1 COPYPASTE
 -changed the 'J' string replacement to 1 to reflect Joker's lowest individual card ranking
 -joker logic done by adding the joker count to the highest index and going from there
 -if joker is present in the hand, removed the count of the joker and appended a 0
     first is for edge cases where joker is the most common, second is for if every card is joker
 -still not working, do tomorrow
--current wrong answer: 249715629
+-fixed edge case with full house and 2 pair
+-current wrong answer: 252486213
 """
 
 total = 0
@@ -54,15 +55,18 @@ for h in hands:
     maxWithJoker = max(ccList) + jokerCount
     # since jokerCount is set to 0 if there are no jokers
 
+    # diagnostics
+    twoAmount = sum(value == 2 for value in cardCounts)
+    print(f"hand, max count, joker count, max count with joker, and amount of two counts are: {hList}, {max(ccList)}, {jokerCount}, {maxWithJoker}, {twoAmount}")
     if maxWithJoker == 5: # 5 of a kind
         values.append([1000000, hands.index(h)])
         # the second element here is the original index of the hand in the hands list
         # will be used for calculation at the end
     elif maxWithJoker == 4: # 4 of a kind
         values.append([100000, hands.index(h)])
-    elif 3 in cardCounts and 2 in cardCounts: # full house
+    elif maxWithJoker == 3 and sum(value == 2 for value in cardCounts) == 2: # full house
         values.append([10000, hands.index(h)])
-    elif 3 in cardCounts: # three of a kind
+    elif maxWithJoker == 3: # three of a kind
         values.append([1000, hands.index(h)])
     elif sum(value == 2 for value in cardCounts) == 2: # two pair
         values.append([100, hands.index(h)])
