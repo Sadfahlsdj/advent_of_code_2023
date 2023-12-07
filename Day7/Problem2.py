@@ -22,6 +22,7 @@ def sortValues(values, handsChanged):
     # letter values in hands have been replaced so the largest values in the problem
     # will be the largest by ascii comparison
     # with slight variations this is just a normal bubblesort
+    # this is the exact same as in problem 1
     n = len(values)
     for i in range(n - 1):
         for j in range(0, n-1-i):
@@ -45,6 +46,7 @@ for h in hands:
 
     ccList = list(cardCounts) # creates list so I can do list operations
     # stands for card count list
+    # this is used for the rest of card counting operations below, not the cardCounts dict__values datatype
 
     if 'J' in uniqueCards:
         jokerCount = ccList[list(uniqueCards).index('J')]
@@ -53,31 +55,30 @@ for h in hands:
         if jokerCount == 5:
             ccList.append(0) # ccList will be empty after removing jokerCount otherwise
         ccList[ccList.index(max(ccList))] += jokerCount
+        # necessary so that full houses as I have them written will work
     else:
         jokerCount = 0
 
-    # maxWithJoker = max(ccList) + jokerCount
-    maxWithJoker = max(ccList)
-    # since jokerCount is set to 0 if there are no jokers
+    maxWithJoker = max(ccList) # jokerCount is already added above
 
-    # diagnostics
-    twoAmount = sum(value == 2 for value in cardCounts)
-    print(f"hand, max count, joker count, max count with joker, and amount of two counts are: {hList}, {max(ccList)}, {jokerCount}, {maxWithJoker}, {twoAmount}")
+    twoAmount = sum(value == 2 for value in cardCounts) # saves the trouble of typing this out
+    # print(f"hand, max count, joker count, max count with joker, and amount of two counts are: {hList}, {max(ccList)}, {jokerCount}, {maxWithJoker}, {twoAmount}")
     if maxWithJoker == 5: # 5 of a kind
         values.append([1000000, hands.index(h)])
         # the second element here is the original index of the hand in the hands list
         # will be used for calculation at the end
     elif maxWithJoker == 4: # 4 of a kind
         values.append([100000, hands.index(h)])
-    elif maxWithJoker == 3 and 2 in ccList: # full house
+    elif maxWithJoker == 3 and 2 in ccList: # full house; can't be gotten with >1 joker
+        # see ccList implementation above for why this works
         values.append([10000, hands.index(h)])
     elif maxWithJoker == 3: # three of a kind
         values.append([1000, hands.index(h)])
-    elif sum(value == 2 for value in cardCounts) == 2: # two pair
+    elif twoAmount == 2: # two pair; can't be gotten with any jokers
         values.append([100, hands.index(h)])
     elif maxWithJoker == 2: # one pair
         values.append([10, hands.index(h)])
-    else: # high card
+    else: # high card; can't be gotten with any jokers
         values.append([1, hands.index(h)])
     # print(values[len(values)-1][0])
 
@@ -91,7 +92,7 @@ for i in range(len(hands)):
 
 handsChanged = hands.copy() # for use with the sorting
 
-
+# everything past here is the same as in problem 1
 
 # diagnostics
 print("hands & values & bets: ")
