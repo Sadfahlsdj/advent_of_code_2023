@@ -1,6 +1,6 @@
 from collections import Counter
 
-with open('example.txt') as f:
+with open('input.txt') as f:
     lines = [line.rstrip() for line in f]
 
 """
@@ -11,7 +11,10 @@ CURRENT STEPS AFTER P1 COPYPASTE
     first is for edge cases where joker is the most common, second is for if every card is joker
 -still not working, do tomorrow
 -fixed edge case with full house and 2 pair
--current wrong answer: 252486213
+-re-fixed full house
+-re-fixed full house
+-current wrong answers: 252486213, 252368364
+-fifth time was the charm 252137472 is correct GOD BLESS
 """
 
 total = 0
@@ -49,10 +52,12 @@ for h in hands:
             ccList.remove(jokerCount) # removes the joker count if it's the most common
         if jokerCount == 5:
             ccList.append(0) # ccList will be empty after removing jokerCount otherwise
+        ccList[ccList.index(max(ccList))] += jokerCount
     else:
         jokerCount = 0
 
-    maxWithJoker = max(ccList) + jokerCount
+    # maxWithJoker = max(ccList) + jokerCount
+    maxWithJoker = max(ccList)
     # since jokerCount is set to 0 if there are no jokers
 
     # diagnostics
@@ -64,7 +69,7 @@ for h in hands:
         # will be used for calculation at the end
     elif maxWithJoker == 4: # 4 of a kind
         values.append([100000, hands.index(h)])
-    elif maxWithJoker == 3 and sum(value == 2 for value in cardCounts) == 2: # full house
+    elif maxWithJoker == 3 and 2 in ccList: # full house
         values.append([10000, hands.index(h)])
     elif maxWithJoker == 3: # three of a kind
         values.append([1000, hands.index(h)])
@@ -86,13 +91,15 @@ for i in range(len(hands)):
 
 handsChanged = hands.copy() # for use with the sorting
 
-sortValues(values, handsChanged) # sorts hand values
+
 
 # diagnostics
-print("updated values: ")
+print("hands & values & bets: ")
 print(values)
 print(hands)
 print(bets)
+
+sortValues(values, handsChanged) # sorts hand values
 
 for v in values:
     total += (len(hands) - v[1]) * bets[values[v[1]][1]]
