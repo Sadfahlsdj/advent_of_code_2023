@@ -1,0 +1,22 @@
+# bruteforce attempt for problem 1
+
+found = False
+while not found:
+    for i in range(len(directions)):
+        counter += 1
+        loc = current[0]
+        # print(f"current location is {current}, current direction is {directions[i]}")
+        if directions[i] == 'L':
+            indexToFind = 1
+        elif directions[i] == 'R':
+            indexToFind = 2
+        for l in locations:
+            if l[0] == current[indexToFind]:
+                print(f"found location {l} that has location {current[indexToFind]}")
+                current = l
+                break
+        if current[0] == 'ZZZ':
+            found = True
+            break
+
+print(counter)

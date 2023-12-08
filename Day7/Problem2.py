@@ -1,6 +1,6 @@
 from collections import Counter
 
-with open('input.txt') as f:
+with open('example.txt') as f:
     lines = [line.rstrip() for line in f]
 
 """
