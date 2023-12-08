@@ -20,3 +20,26 @@ while not found:
             break
 
 print(counter)
+
+# scuffed working backwards, useless due to presence of dead ends
+found = False
+for i in range(len(directions)):
+    directionsCurrent = directions[i+1:len(directionsCurrent)] + directions[0:i+1]
+    for i in reversed(range(len(directions))):
+        counter += 1
+        loc = current[0]
+        print(f"current location is {current}, current direction is {directionsCurrent[i]}")
+        if directionsCurrent[i] == 'L':
+            indexToFind = 1
+        elif directionsCurrent[i] == 'R':
+            indexToFind = 2
+        for l in locations:
+            if l[indexToFind] == current[0]:
+                print(f"found location {l} that has location {current[indexToFind]}")
+                current = l
+                break
+        if current[0] == 'AAA':
+            found = True
+            break
+
+print(counter)
