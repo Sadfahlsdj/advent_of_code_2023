@@ -1,3 +1,5 @@
+from math import gcd
+
 with open('input.txt') as f:
     lines = [line.rstrip() for line in f]
 
@@ -50,6 +52,7 @@ while not found:
 
 
 print(counter)
+
 
 directionsCurrent = directions
 
