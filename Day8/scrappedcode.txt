@@ -43,3 +43,28 @@ for i in range(len(directions)):
             break
 
 print(counter)
+
+# code for p2 that only worked for some of the input As.. really weird
+"""while not all(f for f in found):
+    for i in range(len(directions)):
+        for j in range(len(current)):
+            if not found[j]:
+                # print(f"current location is {current}, direction is {directions[i]},", end=" ")
+                counter[j] += 1
+                loc = current[j][0]
+                # print(f"current location is {current}, current direction is {directions[i]}")
+                if directions[i] == 'L':
+                    indexToFind = 1
+                elif directions[i] == 'R':
+                    indexToFind = 2
+                # print(f"going to {current[j][indexToFind]}")
+                for l in locations:
+                    if l[0] == current[j][indexToFind]:
+                        # print(f"found location {l} that has location {current[j][indexToFind]} with count {counter}")
+                        current[j] = l
+                        break
+                if current[j][0][2] == 'Z':
+                    found[j] = True
+                    print(f"index {j} is found, original is {currentOriginal[j]} and endpoint is {current[j]} with count {counter[j]}")
+                    ends[j] = current[j]
+                    break"""
