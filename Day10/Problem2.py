@@ -147,10 +147,6 @@ while currentPos != startSPos: # end condition
         direction = 1 # came from right
     # print(f"moved to {current} in the direction {movedTo}")
 
-    # counter += 1
-
-# next part will add a manual space where there are 2 adjacent but nonconnected pipes
-
 # current = |, 7, or F and adjacent = |, L, or J: down connection
 # current = |, L, or J and adjacent = |, 7, or F: up connection
 # current = F, L, or - and adjacent = J, 7, or -: right connection
