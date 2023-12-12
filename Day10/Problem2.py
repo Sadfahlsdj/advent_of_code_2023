@@ -1,7 +1,7 @@
 import numpy as np
 np.set_printoptions(suppress=True)
 
-currentInput = 'input.txt' # for hardcoding what pipe S is
+currentInput = 'example3.txt' # for hardcoding what pipe S is
 
 with open(currentInput) as f:
     lines = [line.rstrip() for line in f]
@@ -31,7 +31,7 @@ lines.insert(0, '.' * len(lines[0])) # padding up/down
 lines.append('.' * len(lines[0]))
 # print(lines[0])
 
-floodfillMap = [[0] * len(lines[0])] * len(lines) # will be used for getting area
+floodfillMap = arr = [[0 for i in range(len(lines[0]) * 3)] for j in range(len(lines) * 3)] # will be used for getting area
 
 counter = 1 # we hardcode start position as having taken 1 step already
 startPos = [-1, -1]
@@ -52,7 +52,7 @@ for l in lines:
 currentPos = [startPos[0], startPos[1]]
 current = lines[currentPos[0]][currentPos[1]]
 
-if currentInput == 'example1.txt' or currentInput == 'example2.txt':
+if currentInput == 'example1.txt' or currentInput == 'example2.txt' or currentInput == 'example3.txt':
     # hardcoding what S starts as
     lines[startSPos[0]] = lines[startSPos[0]].replace('S', 'F')
 elif currentInput == 'input.txt':
@@ -61,6 +61,7 @@ elif currentInput == 'input.txt':
 floodfillMap[startSPos[0]][startSPos[1]] = 1
 
 while currentPos != startSPos: # end condition
+    floodfillMap[currentPos[0] * 3][currentPos[1] * 3] = 1
     current = lines[currentPos[0]][currentPos[1]]
     up, right = lines[currentPos[0] - 1][currentPos[1]], lines[currentPos[0]][currentPos[1] + 1]
     down, left = lines[currentPos[0] + 1][currentPos[1]], lines[currentPos[0]][currentPos[1] - 1]
@@ -72,7 +73,7 @@ while currentPos != startSPos: # end condition
     # current = |, L, or J and adjacent = |, 7, or F: up connection
     # current = F, L, or - and adjacent = J, 7, or -: right connection
     # current = J, 7, or - and adjacent = F, L, or -: left connection
-    print(f"current is {current}, up, right, down, and left respectively are {up}, {right}, {down}, {left}")
+    # print(f"current is {current}, up, right, down, and left respectively are {up}, {right}, {down}, {left}")
     # next conditionals are checking which pipe to move to
     if (current == '|' or current == 'L' or current == 'J') and (up == '|' or up == '7' or up == 'F') and direction != 0:
         current = up
@@ -95,18 +96,26 @@ while currentPos != startSPos: # end condition
         movedTo = "left"
         direction = 1 # came from right
     print(f"moved to {current} in the direction {movedTo}")
-    floodfillMap[currentPos[0]][currentPos[1]] = 1
+
     counter += 1
 
-# print(lines[startPos[0]][startPos[1]])
-print(counter)
-print((counter) / 2)
-npMap = np.round(np.array(floodfillMap), 1)
-# print(npMap)
-np.savetxt('floodfillmap.txt', npMap)
+# next part will add a manual space where there are 2 adjacent but nonconnected pipes
+
+# current = |, 7, or F and adjacent = |, L, or J: down connection
+# current = |, L, or J and adjacent = |, 7, or F: up connection
+# current = F, L, or - and adjacent = J, 7, or -: right connection
+# current = J, 7, or - and adjacent = F, L, or -: left connection
 
 for l in floodfillMap:
     print(l)
+
+for i in range(1, len(floodfillMap) - 1):
+    for j in range(1, len(floodfillMap[i]) - 1):
+        mapPoint = floodfillMap[i][j]
+
+
+
 # print(floodfillMap)
+
 
 
