@@ -1,49 +1,72 @@
-from numpy import ndarray
-
-def column(index, li):
-    returnme = []
-    for l in li:
-        returnme.append(l[index])
-    return returnme
-
 with open('example.txt') as f:
-    lines = [line.rstrip() for line in f]
+    lines = [list(l.strip()) for l in f.readlines()]
 
-total = 0
-formationCount = 1
-for l in lines:
-    # print(l)
-    if l == '':
-        formationCount += 1
-        # print(f"line {lines.index(l)} is all space")
+def reflection_equality(orig, reflection, orientation):
+    # orientation = 1 for vertical reflections (across rows), 0 for horizontal
+    if orientation:
+        for i in range(len(orig)):
+            if orig[len(orig) - i - 1] != reflection[i]:
+                return 0
+    else:
+        for i in range(len(orig[0])):
+            if orig[:][len(orig) - i - 1] != reflection[:][i]:
+                return 0
 
-formations = [[]]
-formations.append([''])
+    print(f'orig = {orig}, reflection = {reflection}, orientation = {orientation}')
+    return 1
+def find_reflection(inp):
+    # check horizontal (across rows)
+    vert_len = len(inp)
+    for i in range(1, vert_len):
+        dir = 0 if i < float(vert_len / 2) else 1 # 0 = on top half, 1 = on bottom half
+        if not dir:
+            # for j in range(i):
+            #     print(inp[j])
+            # print('reflection')
+            # for j in range(i, 2*i):
+            #     print(inp[j])
+            # print('')
 
-i = 0
-for l in lines:
-    if l == '' and lines.index(l) != len(lines) - 1 :
-        formations.append([''])
-        i += 1
-    formations[i].append(l)
+            if reflection_equality(inp[:i], inp[i:2*i], 1):
+                return 100 * i
+        else:
+            diff = vert_len - i
+            if reflection_equality(inp[i - diff:i], inp[i:], 1):
+                return 100 * i
 
-# next few lines are due to terrible input parsing, makes each formation array what it should be
-del formations[len(formations) - 1]
+    # check vertical (across columns)
+    hor_len = len(inp[0])
+    for i in range(1, hor_len):
+        dir = 0 if i < float(hor_len / 2) else 1
+        if not dir:
+            if reflection_equality(inp[:][:i], inp[:][i:2*i], 0):
+                print(f'index = {i}, vertical reflect')
+                return i
+        else:
+            diff = hor_len - i
+            print(f'{inp[:][i - diff:i]}\nreflection\n{inp[:][i:]}')
+            if reflection_equality(inp[:][i - diff:i], inp[:][i:], 0):
+                print(f'index = {i}, vertical reflect')
+                return i
 
-for i in range(1, len(formations)):
-    del formations[i][0]
-    del formations[i][0]
 
-for f in formations:
-    for i in range(len(f) - 1):
-        horizontalMatch = True
-        for j in range(i):
-            if f[i - j] != f[i + j + 1]:
-                horizontalMatch = False
-        if horizontalMatch == True:
-            total += (i + 1) * 100
-            print(f"horizontal match found with {i+1} lines above line of symmetry")
-    print(' ')
+
+sets, temp = [], [] # sets is 3d list, each inner 2d = 1 "set" together
+for index, l in enumerate(lines):
+    if l != '':
+        temp.append(l)
+        # print(f'appending line {l}')
+    if l == [] or index == (len(lines) - 1): # empty list = empty line in input
+        sets.append(temp[:])
+        # print(sets)
+        temp.clear()
+
+print(find_reflection(sets[0]))
+
+
+
+
+
 
 
 
